@@ -40,7 +40,6 @@ target_include_directories(DaktOverlay
 target_link_libraries(DaktOverlay
     PUBLIC
         Dakt::Core
-        Dakt::GUI
     PRIVATE
         Dakt::Logger
 )

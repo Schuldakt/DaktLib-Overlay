@@ -143,7 +143,7 @@ bool WindowTracker::isBorderlessFullscreen() const
     bool noBorder = (style & WS_BORDER) == 0 && (style & WS_DLGFRAME) == 0;
 
     // Check if window covers the entire monitor
-    gui::Rect monitorBounds = getMonitorBounds();
+    Rect monitorBounds = getMonitorBounds();
 
     return noBorder && m_currentState.bounds.x() <= monitorBounds.x() &&
            m_currentState.bounds.y() <= monitorBounds.y() && m_currentState.bounds.width() >= monitorBounds.width() &&
@@ -221,13 +221,13 @@ void WindowTracker::refresh()
 // Monitor Information
 // ============================================================================
 
-gui::Rect WindowTracker::getMonitorBounds() const
+Rect WindowTracker::getMonitorBounds() const
 {
 #ifdef _WIN32
     if (!hasValidTarget())
     {
         // Return primary monitor bounds
-        return gui::Rect{0, 0, static_cast<f32>(GetSystemMetrics(SM_CXSCREEN)),
+        return Rect{0, 0, static_cast<f32>(GetSystemMetrics(SM_CXSCREEN)),
                          static_cast<f32>(GetSystemMetrics(SM_CYSCREEN))};
     }
 
@@ -237,16 +237,16 @@ gui::Rect WindowTracker::getMonitorBounds() const
 
     if (GetMonitorInfoW(monitor, &info))
     {
-        return gui::Rect{static_cast<f32>(info.rcMonitor.left), static_cast<f32>(info.rcMonitor.top),
+        return Rect{static_cast<f32>(info.rcMonitor.left), static_cast<f32>(info.rcMonitor.top),
                          static_cast<f32>(info.rcMonitor.right - info.rcMonitor.left),
                          static_cast<f32>(info.rcMonitor.bottom - info.rcMonitor.top)};
     }
 #endif
 
-    return gui::Rect{0, 0, 1920, 1080};
+    return Rect{0, 0, 1920, 1080};
 }
 
-gui::Rect WindowTracker::getMonitorWorkArea() const
+Rect WindowTracker::getMonitorWorkArea() const
 {
 #ifdef _WIN32
     if (!hasValidTarget())
@@ -254,7 +254,7 @@ gui::Rect WindowTracker::getMonitorWorkArea() const
         RECT workArea;
         if (SystemParametersInfoW(SPI_GETWORKAREA, 0, &workArea, 0))
         {
-            return gui::Rect{static_cast<f32>(workArea.left), static_cast<f32>(workArea.top),
+            return Rect{static_cast<f32>(workArea.left), static_cast<f32>(workArea.top),
                              static_cast<f32>(workArea.right - workArea.left),
                              static_cast<f32>(workArea.bottom - workArea.top)};
         }
@@ -267,7 +267,7 @@ gui::Rect WindowTracker::getMonitorWorkArea() const
 
         if (GetMonitorInfoW(monitor, &info))
         {
-            return gui::Rect{static_cast<f32>(info.rcWork.left), static_cast<f32>(info.rcWork.top),
+            return Rect{static_cast<f32>(info.rcWork.left), static_cast<f32>(info.rcWork.top),
                              static_cast<f32>(info.rcWork.right - info.rcWork.left),
                              static_cast<f32>(info.rcWork.bottom - info.rcWork.top)};
         }
@@ -277,23 +277,23 @@ gui::Rect WindowTracker::getMonitorWorkArea() const
     return getMonitorBounds();
 }
 
-std::vector<gui::Rect> WindowTracker::getAllMonitorBounds() const
+std::vector<Rect> WindowTracker::getAllMonitorBounds() const
 {
-    std::vector<gui::Rect> results;
+    std::vector<Rect> results;
 
 #ifdef _WIN32
     EnumDisplayMonitors(
         nullptr, nullptr,
         [](HMONITOR monitor, HDC, LPRECT, LPARAM lParam) -> BOOL
         {
-            auto* results = reinterpret_cast<std::vector<gui::Rect>*>(lParam);
+            auto* results = reinterpret_cast<std::vector<Rect>*>(lParam);
 
             MONITORINFO info = {};
             info.cbSize = sizeof(info);
 
             if (GetMonitorInfoW(monitor, &info))
             {
-                results->push_back(gui::Rect{static_cast<f32>(info.rcMonitor.left),
+                results->push_back(Rect{static_cast<f32>(info.rcMonitor.left),
                                              static_cast<f32>(info.rcMonitor.top),
                                              static_cast<f32>(info.rcMonitor.right - info.rcMonitor.left),
                                              static_cast<f32>(info.rcMonitor.bottom - info.rcMonitor.top)});
@@ -332,7 +332,7 @@ void WindowTracker::updateWindowState()
     if (GetWindowRect(m_targetWindow, &rect))
     {
         m_currentState.bounds =
-            gui::Rect{static_cast<f32>(rect.left), static_cast<f32>(rect.top), static_cast<f32>(rect.right - rect.left),
+            Rect{static_cast<f32>(rect.left), static_cast<f32>(rect.top), static_cast<f32>(rect.right - rect.left),
                       static_cast<f32>(rect.bottom - rect.top)};
     }
 

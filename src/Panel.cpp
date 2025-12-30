@@ -30,7 +30,7 @@ void TextPanel::update(f32 /*deltaTime*/)
     // Nothing to update for simple text panel
 }
 
-void TextPanel::render(const gui::Rect& /*bounds*/)
+void TextPanel::render(const Rect& /*bounds*/)
 {
     // Rendering would be done through the GUI module
     // This is a placeholder - actual implementation would use DrawList
@@ -56,7 +56,7 @@ void CallbackPanel::update(f32 deltaTime)
     }
 }
 
-void CallbackPanel::render(const gui::Rect& bounds)
+void CallbackPanel::render(const Rect& bounds)
 {
     if (m_renderCallback)
     {

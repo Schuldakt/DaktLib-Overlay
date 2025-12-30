@@ -245,7 +245,7 @@ Option<CapturedImage> ScreenCapture::scale(const CapturedImage& image, u32 newWi
     return result;
 }
 
-Option<CapturedImage> ScreenCapture::crop(const CapturedImage& image, const gui::Rect& region)
+Option<CapturedImage> ScreenCapture::crop(const CapturedImage& image, const Rect& region)
 {
     i32 x = static_cast<i32>(region.x());
     i32 y = static_cast<i32>(region.y());
@@ -381,7 +381,7 @@ Option<CapturedImage> BitBltCapture::captureScreen()
     int width = GetSystemMetrics(SM_CXSCREEN);
     int height = GetSystemMetrics(SM_CYSCREEN);
 
-    gui::Rect region{0, 0, static_cast<f32>(width), static_cast<f32>(height)};
+    Rect region{0, 0, static_cast<f32>(width), static_cast<f32>(height)};
     return captureRegion(region);
 #else
     return std::nullopt;
@@ -408,7 +408,7 @@ Option<CapturedImage> BitBltCapture::captureWindow(void* windowHandle)
         return std::nullopt;
     }
 
-    gui::Rect region{static_cast<f32>(rect.left), static_cast<f32>(rect.top), static_cast<f32>(rect.right - rect.left),
+    Rect region{static_cast<f32>(rect.left), static_cast<f32>(rect.top), static_cast<f32>(rect.right - rect.left),
                      static_cast<f32>(rect.bottom - rect.top)};
 
     return captureRegion(region);
@@ -418,7 +418,7 @@ Option<CapturedImage> BitBltCapture::captureWindow(void* windowHandle)
 #endif
 }
 
-Option<CapturedImage> BitBltCapture::captureRegion(const gui::Rect& region)
+Option<CapturedImage> BitBltCapture::captureRegion(const Rect& region)
 {
 #ifdef _WIN32
     if (!m_initialized)
@@ -615,7 +615,7 @@ Option<CapturedImage> DXGICapture::captureWindow(void* windowHandle)
         return fullCapture;
     }
 
-    gui::Rect region{static_cast<f32>(rect.left), static_cast<f32>(rect.top), static_cast<f32>(rect.right - rect.left),
+    Rect region{static_cast<f32>(rect.left), static_cast<f32>(rect.top), static_cast<f32>(rect.right - rect.left),
                      static_cast<f32>(rect.bottom - rect.top)};
 
     return ScreenCapture::crop(*fullCapture, region);
@@ -625,7 +625,7 @@ Option<CapturedImage> DXGICapture::captureWindow(void* windowHandle)
 #endif
 }
 
-Option<CapturedImage> DXGICapture::captureRegion(const gui::Rect& region)
+Option<CapturedImage> DXGICapture::captureRegion(const Rect& region)
 {
     auto fullCapture = captureScreen();
     if (!fullCapture)

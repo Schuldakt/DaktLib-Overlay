@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <dakt/core/Geometry.hpp>
 #include <dakt/core/String.hpp>
 #include <dakt/core/Types.hpp>
-#include <dakt/gui/Types.hpp>
 #include <dakt/overlay/HotkeyManager.hpp>
 #include <dakt/overlay/Panel.hpp>
 #include <dakt/overlay/ProcessDetector.hpp>
@@ -209,10 +209,10 @@ public:
     [[nodiscard]] OverlayState getState() const { return m_state; }
 
     /// Get target window bounds
-    [[nodiscard]] gui::Rect getTargetBounds() const;
+    [[nodiscard]] Rect getTargetBounds() const;
 
     /// Get overlay window bounds
-    [[nodiscard]] gui::Rect getOverlayBounds() const;
+    [[nodiscard]] Rect getOverlayBounds() const;
 
     // ========================================================================
     // Callbacks

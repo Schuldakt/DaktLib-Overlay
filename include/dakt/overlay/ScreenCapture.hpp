@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <dakt/core/Geometry.hpp>
 #include <dakt/core/String.hpp>
 #include <dakt/core/Types.hpp>
-#include <dakt/gui/Types.hpp>
 
 #include <functional>
 #include <memory>
@@ -97,7 +97,7 @@ public:
     [[nodiscard]] virtual Option<CapturedImage> captureWindow(void* windowHandle) = 0;
 
     /// Capture a region of the screen
-    [[nodiscard]] virtual Option<CapturedImage> captureRegion(const gui::Rect& region) = 0;
+    [[nodiscard]] virtual Option<CapturedImage> captureRegion(const Rect& region) = 0;
 
     /// Set the output format
     virtual void setFormat(CaptureFormat format) = 0;
@@ -131,7 +131,7 @@ public:
     [[nodiscard]] static Option<CapturedImage> scale(const CapturedImage& image, u32 newWidth, u32 newHeight);
 
     /// Crop an image
-    [[nodiscard]] static Option<CapturedImage> crop(const CapturedImage& image, const gui::Rect& region);
+    [[nodiscard]] static Option<CapturedImage> crop(const CapturedImage& image, const Rect& region);
 };
 
 // ============================================================================
@@ -151,7 +151,7 @@ public:
 
     [[nodiscard]] Option<CapturedImage> captureScreen() override;
     [[nodiscard]] Option<CapturedImage> captureWindow(void* windowHandle) override;
-    [[nodiscard]] Option<CapturedImage> captureRegion(const gui::Rect& region) override;
+    [[nodiscard]] Option<CapturedImage> captureRegion(const Rect& region) override;
 
     void setFormat(CaptureFormat format) override { m_format = format; }
     [[nodiscard]] CaptureFormat getFormat() const override { return m_format; }
@@ -185,7 +185,7 @@ public:
 
     [[nodiscard]] Option<CapturedImage> captureScreen() override;
     [[nodiscard]] Option<CapturedImage> captureWindow(void* windowHandle) override;
-    [[nodiscard]] Option<CapturedImage> captureRegion(const gui::Rect& region) override;
+    [[nodiscard]] Option<CapturedImage> captureRegion(const Rect& region) override;
 
     void setFormat(CaptureFormat format) override { m_format = format; }
     [[nodiscard]] CaptureFormat getFormat() const override { return m_format; }

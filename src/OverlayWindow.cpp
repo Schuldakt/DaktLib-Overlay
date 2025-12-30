@@ -134,7 +134,7 @@ bool OverlayWindow::initialize(const OverlayConfig& config)
     }
 
     // Set up window tracker callbacks
-    m_windowTracker.setBoundsChangedCallback([this](const gui::Rect&) { updateWindowPosition(); });
+    m_windowTracker.setBoundsChangedCallback([this](const Rect&) { updateWindowPosition(); });
 
     m_windowTracker.setWindowClosedCallback([this]() { detach(); });
 
@@ -610,18 +610,18 @@ void* OverlayWindow::getDeviceContext() const
 // State
 // ============================================================================
 
-gui::Rect OverlayWindow::getTargetBounds() const
+Rect OverlayWindow::getTargetBounds() const
 {
     return m_windowTracker.getBounds();
 }
 
-gui::Rect OverlayWindow::getOverlayBounds() const
+Rect OverlayWindow::getOverlayBounds() const
 {
 #ifdef _WIN32
     RECT rect;
     if (GetWindowRect(m_hwnd, &rect))
     {
-        return gui::Rect{static_cast<f32>(rect.left), static_cast<f32>(rect.top),
+        return Rect{static_cast<f32>(rect.left), static_cast<f32>(rect.top),
                          static_cast<f32>(rect.right - rect.left), static_cast<f32>(rect.bottom - rect.top)};
     }
 #endif
@@ -921,7 +921,7 @@ void OverlayWindow::updateWindowPosition()
         return;
     }
 
-    gui::Rect bounds = m_windowTracker.getBounds();
+    Rect bounds = m_windowTracker.getBounds();
 
     SetWindowPos(m_hwnd, HWND_TOPMOST, static_cast<int>(bounds.x()), static_cast<int>(bounds.y()),
                  static_cast<int>(bounds.width()), static_cast<int>(bounds.height()), SWP_NOACTIVATE);
@@ -930,7 +930,7 @@ void OverlayWindow::updateWindowPosition()
 
 void OverlayWindow::renderPanels()
 {
-    gui::Rect overlayBounds = getOverlayBounds();
+    Rect overlayBounds = getOverlayBounds();
 
     for (auto& entry : m_panels)
     {
@@ -940,43 +940,43 @@ void OverlayWindow::renderPanels()
         }
 
         // Calculate panel bounds based on anchor
-        gui::Vec2 size = entry.panel->getDefaultSize();
-        gui::Vec2 pos{0, 0};
+        Vec2 size = entry.panel->getDefaultSize();
+        Vec2 pos{0, 0};
 
         switch (entry.panel->getAnchor())
         {
             case PanelAnchor::TopLeft:
-                pos = gui::Vec2{0, 0};
+                pos = Vec2{0, 0};
                 break;
             case PanelAnchor::TopCenter:
-                pos = gui::Vec2{(overlayBounds.width() - size.x) / 2, 0};
+                pos = Vec2{(overlayBounds.width() - size.x) / 2, 0};
                 break;
             case PanelAnchor::TopRight:
-                pos = gui::Vec2{overlayBounds.width() - size.x, 0};
+                pos = Vec2{overlayBounds.width() - size.x, 0};
                 break;
             case PanelAnchor::MiddleLeft:
-                pos = gui::Vec2{0, (overlayBounds.height() - size.y) / 2};
+                pos = Vec2{0, (overlayBounds.height() - size.y) / 2};
                 break;
             case PanelAnchor::Center:
-                pos = gui::Vec2{(overlayBounds.width() - size.x) / 2, (overlayBounds.height() - size.y) / 2};
+                pos = Vec2{(overlayBounds.width() - size.x) / 2, (overlayBounds.height() - size.y) / 2};
                 break;
             case PanelAnchor::MiddleRight:
-                pos = gui::Vec2{overlayBounds.width() - size.x, (overlayBounds.height() - size.y) / 2};
+                pos = Vec2{overlayBounds.width() - size.x, (overlayBounds.height() - size.y) / 2};
                 break;
             case PanelAnchor::BottomLeft:
-                pos = gui::Vec2{0, overlayBounds.height() - size.y};
+                pos = Vec2{0, overlayBounds.height() - size.y};
                 break;
             case PanelAnchor::BottomCenter:
-                pos = gui::Vec2{(overlayBounds.width() - size.x) / 2, overlayBounds.height() - size.y};
+                pos = Vec2{(overlayBounds.width() - size.x) / 2, overlayBounds.height() - size.y};
                 break;
             case PanelAnchor::BottomRight:
-                pos = gui::Vec2{overlayBounds.width() - size.x, overlayBounds.height() - size.y};
+                pos = Vec2{overlayBounds.width() - size.x, overlayBounds.height() - size.y};
                 break;
             case PanelAnchor::Custom:
                 break;
         }
 
-        gui::Rect panelBounds{pos.x, pos.y, size.x, size.y};
+        Rect panelBounds{pos.x, pos.y, size.x, size.y};
         entry.panel->render(panelBounds);
     }
 }

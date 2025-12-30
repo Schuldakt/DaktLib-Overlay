@@ -6,9 +6,9 @@
 
 #pragma once
 
+#include <dakt/core/Geometry.hpp>
 #include <dakt/core/String.hpp>
 #include <dakt/core/Types.hpp>
-#include <dakt/gui/Types.hpp>
 
 #include <functional>
 
@@ -33,7 +33,7 @@ using namespace dakt::core;
 
 struct WindowState
 {
-    gui::Rect bounds;
+    Rect bounds;
     bool minimized = false;
     bool maximized = false;
     bool focused = false;
@@ -96,7 +96,7 @@ public:
     [[nodiscard]] const WindowState& getState() const { return m_currentState; }
 
     /// Get the window bounds
-    [[nodiscard]] gui::Rect getBounds() const { return m_currentState.bounds; }
+    [[nodiscard]] Rect getBounds() const { return m_currentState.bounds; }
 
     /// Check if the window is minimized
     [[nodiscard]] bool isMinimized() const { return m_currentState.minimized; }
@@ -127,7 +127,7 @@ public:
     // Callbacks
     // ========================================================================
 
-    using BoundsChangedCallback = std::function<void(const gui::Rect& newBounds)>;
+    using BoundsChangedCallback = std::function<void(const Rect& newBounds)>;
     using StateChangedCallback = std::function<void(const WindowState& newState)>;
     using WindowClosedCallback = std::function<void()>;
 
@@ -145,13 +145,13 @@ public:
     // ========================================================================
 
     /// Get the monitor containing the target window
-    [[nodiscard]] gui::Rect getMonitorBounds() const;
+    [[nodiscard]] Rect getMonitorBounds() const;
 
     /// Get the work area (excluding taskbar) of the monitor
-    [[nodiscard]] gui::Rect getMonitorWorkArea() const;
+    [[nodiscard]] Rect getMonitorWorkArea() const;
 
     /// Get all monitor bounds
-    [[nodiscard]] std::vector<gui::Rect> getAllMonitorBounds() const;
+    [[nodiscard]] std::vector<Rect> getAllMonitorBounds() const;
 
 private:
     void updateWindowState();
