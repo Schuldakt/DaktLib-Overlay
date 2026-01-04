@@ -29,6 +29,9 @@ _deps/
 *.cmake
 !CMakeLists.txt
 
+# Clang
+.cache
+
 # OS
 .DS_Store
 Thumbs.db

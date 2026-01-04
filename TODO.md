@@ -7,10 +7,10 @@
 ---
 
 ## Phase 1: Foundation
-- [ ] **[S]** CMake scaffolding, export macros
-- [ ] **[S]** Core types (`OverlayManager`, `OverlayWindow`, `Layer`)
-- [ ] **[S]** Math helpers (rects, color, transforms)
-- [ ] **[M]** Error codes and logging hooks
+- [x] **[S]** CMake scaffolding, export macros
+- [x] **[S]** Core types (`OverlayManager`, `OverlayWindow`, `Layer`) under `core/`
+- [x] **[S]** Math helpers (rects, color, transforms) in `core/Geometry` and `core/Color`
+- [ ] **[M]** Error codes and logging hooks (platform-neutral)
 
 ## Phase 2: Layer & Draw Primitives
 - [ ] **[M]** `Layer` with transform, opacity, clip rect
@@ -31,21 +31,21 @@
 
 ## Phase 5: Surfaces (Cross-Platform Abstraction)
 - [ ] **[M]** `ISurface` interface (resize, present, setOpacity, setHitTest)
-- [ ] **[M]** SoftwareSurface fallback (CPU blit)
+- [ ] **[M]** SoftwareSurface fallback (CPU blit) in `core/`
 - [ ] **[S]** SwapchainSurface base for GPU-backed paths
 
-## Phase 6: Windows Backend
+## Phase 6: Windows Backend (platform/windows)
 - [ ] **[L]** WS_EX_LAYERED window creation
 - [ ] **[M]** UpdateLayeredWindow path (per-pixel alpha)
 - [ ] **[L]** DirectComposition path (Win10+) for better perf
 - [ ] **[S]** Hit-test passthrough via region APIs
 
-## Phase 7: Linux Backend
+## Phase 7: Linux Backend (platform/linux)
 - [ ] **[L]** X11 ARGB window + composite manager detection
 - [ ] **[M]** XFixes region for input passthrough
 - [ ] **[L]** Wayland fallback via PipeWire stream where allowed
 
-## Phase 8: macOS Backend
+## Phase 8: macOS Backend (platform/mac)
 - [ ] **[L]** NSWindow setup (borderless, transparent)
 - [ ] **[M]** CoreAnimation layer tree
 - [ ] **[S]** Mouse ignore toggle
@@ -61,9 +61,9 @@
 - [ ] **[S]** Z-order management within overlays
 
 ## Phase 11: C API
-- [ ] **[S]** Manager/window handles
-- [ ] **[S]** Create/destroy window
-- [ ] **[S]** Bounds/opacity/click-through setters
+- [x] **[S]** Manager/window handles (C ABI)
+- [x] **[S]** Create/destroy window
+- [x] **[S]** Bounds/opacity/click-through setters
 - [ ] **[S]** Present/draw entry point
 
 ## Phase 12: Testing & Samples

@@ -59,39 +59,56 @@ namespace dakt::overlay {
 }
 ```
 
-## Directory Structure
+## Modular Directory Structure
 
 ```
 DaktLib-Overlay/
 ├── include/dakt/overlay/
-│   ├── Overlay.hpp              # Main include
-│   ├── OverlayManager.hpp
-│   ├── Layer.hpp
-│   ├── Input.hpp
-│   ├── Painter.hpp
-│   ├── Surface.hpp
-│   ├── Compositor.hpp
+│   ├── core/
+│   │   ├── OverlayManager.hpp       # Manager + window orchestration
+│   │   ├── OverlayWindow.hpp        # Window wrapper
+│   │   ├── Layer.hpp                # Layer primitive
+│   │   ├── LayerTree.hpp            # Tree traversal + z-order
+│   │   ├── InputRouter.hpp          # Hit-test routing
+│   │   ├── Painter.hpp              # Draw list / batching
+│   │   ├── Surface.hpp              # ISurface + swaps/software
+│   │   ├── Compositor.hpp           # Composition entry
+│   │   ├── Geometry.hpp             # Rect/vec helpers
+│   │   ├── Color.hpp                # Premultiplied color utilities
+│   │   └── Export.hpp               # Visibility macro
 │   ├── platform/
-│   │   ├── WindowsSurface.hpp
-│   │   ├── LinuxSurface.hpp
-│   │   └── MacSurface.hpp
-│   └── c_api.h
+│   │   ├── WindowsSurface.hpp       # WS_EX_LAYERED + DirectComposition
+│   │   ├── LinuxSurface.hpp         # X11/Wayland abstraction
+│   │   └── MacSurface.hpp           # NSWindow/CoreAnimation
+│   └── c_api.h                      # C ABI surface
 ├── src/
-│   ├── OverlayManager.cpp
-│   ├── Layer.cpp
-│   ├── Input.cpp
-│   ├── Painter.cpp
-│   ├── Compositor.cpp
+│   ├── core/
+│   │   ├── OverlayManager.cpp
+│   │   ├── OverlayWindow.cpp
+│   │   ├── Layer.cpp
+│   │   ├── LayerTree.cpp
+│   │   ├── InputRouter.cpp
+│   │   ├── Painter.cpp
+│   │   ├── Surface.cpp
+│   │   ├── Compositor.cpp
+│   │   ├── Geometry.cpp
+│   │   └── Color.cpp
 │   ├── platform/
-│   │   ├── WindowsSurface.cpp
-│   │   ├── LinuxSurface.cpp
-│   │   └── MacSurface.mm
+│   │   ├── windows/WindowsSurface.cpp
+│   │   ├── linux/LinuxSurface.cpp
+│   │   └── mac/MacSurface.mm
 │   └── c_api.cpp
 ├── tests/
 ├── CMakeLists.txt
 ├── ARCHITECTURE.md
 └── TODO.md
 ```
+
+### Modularization Notes
+- `core/` isolates platform-agnostic logic so new platforms can be added without touching overlays/painter APIs.
+- `platform/<os>/` keeps OS-specific windowing and surface code contained; shared interfaces stay under `platform/` headers.
+- `c_api.h` remains flat for ClangSharp friendliness; it includes only public handles and POD structs.
+- Additional features (new blend modes, surfaces, or primitives) plug into `core` without layout churn.
 
 ## Core Components
 
